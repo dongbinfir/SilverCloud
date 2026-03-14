@@ -1,10 +1,13 @@
-﻿using User.Application.UserProfiles.Dtos;
+﻿using User.Application.Common.Extensions;
+using User.Application.UserProfiles.Dtos;
+using User.Domain.ValueObjects;
 
 namespace User.Application.UserProfiles.Queries.GetUserProfile
 {
     public record GetUserProfileQuery : IRequest<UserProfileBriefDto>
     {
-        public int Id { get; set; }
+        public string Identity { get; set; } = null!;
+        public string Password { get; set; } = null!;
     }
 
     public class GetUserProfileQueryHandler : IRequestHandler<GetUserProfileQuery, UserProfileBriefDto>
@@ -20,13 +23,21 @@ namespace User.Application.UserProfiles.Queries.GetUserProfile
 
         public async Task<UserProfileBriefDto> Handle(GetUserProfileQuery request, CancellationToken cancellationToken)
         {
+            Email? identityEmail = null;
+            if (request.Identity.IsValidEmail())
+            {
+                identityEmail = Email.Create(request.Identity);
+            }
+
             var entity = await _context.Set<UserProfile>().AsNoTracking()
-            .ProjectTo<UserProfileBriefDto>(_mapper.ConfigurationProvider)
-            .FirstOrDefaultAsync(a => a.Id == request.Id);
+                .Where(a => a.Password == request.Password &&
+                    (a.PhoneNum == request.Identity || (a.Email == identityEmail)))
+                .ProjectTo<UserProfileBriefDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(cancellationToken);
 
             if (entity == null)
             {
-                throw new NotFoundException(nameof(UserProfile), request.Id);
+                throw new NotFoundException(nameof(UserProfile));
             }
 
             return entity;

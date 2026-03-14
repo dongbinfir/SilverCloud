@@ -6,7 +6,6 @@ using User.Application.UserProfiles.Commands.DeleteUserProfile;
 using User.Application.UserProfiles.Commands.UpdateUserProfile;
 using User.Application.UserProfiles.Dtos;
 using User.Application.UserProfiles.Queries.GetUserProfile;
-using User.Application.UserProfiles.Queries.GetUserProfiles;
 using User.Application.UserProfiles.Queries.SearchUserProfiles;
 
 namespace WebAPI.Controllers
@@ -24,10 +23,10 @@ namespace WebAPI.Controllers
             _sender = sender;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<UserProfileBriefDto>> Get(int id)
+        [HttpPost("Get")]
+        public async Task<ActionResult<UserProfileBriefDto>> Get(GetUserProfileQuery query)
         {
-            return await _sender.Send(new GetUserProfileQuery() { Id = id });
+            return await _sender.Send(query);
         }
 
         [HttpPost]
@@ -55,12 +54,6 @@ namespace WebAPI.Controllers
             await _sender.Send(command);
 
             return Ok();
-        }
-
-        [HttpPost("GetList")]
-        public async Task<ActionResult<List<UserProfileBriefDto>>> GetList()
-        {
-            return await _sender.Send(new GetUserProfilesQuery());
         }
 
         [HttpPost("Search")]
