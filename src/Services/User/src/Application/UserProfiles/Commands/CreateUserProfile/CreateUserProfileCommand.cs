@@ -1,8 +1,16 @@
+using User.Application.UserProfiles.Common;
+using User.Domain.ValueObjects;
+
 namespace User.Application.UserProfiles.Commands.CreateUserProfile;
 
-public record CreateUserProfileCommand : IRequest<int>, IMapTo<UserProfile>
+public record CreateUserProfileCommand : IRequest<int>
 {
-    public string Email { get; set; } = null!;
+    public string? Name { get; set; }
+
+    public string? Email { get; set; }
+
+    public string? PhoneNum { get; set; }
+
     public string Password { get; set; } = null!;
 }
 
@@ -22,7 +30,13 @@ public class CreateUserProfileCommandHandler : IRequestHandler<CreateUserProfile
     public async Task<int> Handle(CreateUserProfileCommand request, CancellationToken cancellationToken)
     {
         // 创建实体并映射
-        var entity = _mapper.Map<UserProfile>(request);
+        var entity = new UserProfile
+        {
+            Name = UserProfileHelper.GetOrCreateName(request.Name),
+            Email = request.Email != null ? Email.Create(request.Email) : null,
+            PhoneNum = request.PhoneNum,
+            Password = request.Password,
+        };
 
         // 添加到数据库
         _context.Set<UserProfile>().Add(entity);
