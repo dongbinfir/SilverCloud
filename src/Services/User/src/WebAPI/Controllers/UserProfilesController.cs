@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using User.Application.UserProfiles.Commands.CreateUserProfile;
 using User.Application.UserProfiles.Commands.DeleteUserProfile;
 using User.Application.UserProfiles.Commands.UpdateUserProfile;
@@ -12,6 +11,7 @@ namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]  // 需要认证
     public class UserProfilesController : ControllerBase
     {
         private readonly ILogger<UserProfilesController> _logger;
@@ -23,8 +23,9 @@ namespace WebAPI.Controllers
             _sender = sender;
         }
 
+        [AllowAnonymous]
         [HttpPost("Get")]
-        public async Task<ActionResult<UserProfileBriefDto>> Get(GetUserProfileQuery query)
+        public async Task<ActionResult<LoginResponseDto>> Get(GetUserProfileQuery query)
         {
             return await _sender.Send(query);
         }

@@ -1,24 +1,23 @@
-﻿
-using User.Domain.ValueObjects;
-
-namespace User.Application.UserProfiles.Dtos
+﻿namespace User.Application.UserProfiles.Dtos
 {
-    public class UserProfileBriefDto : BaseAuditableEntity<int>, IMapFrom<UserProfile>
+    public class UserProfileBriefDto : IMapFrom<UserProfile>
     {
+        public int Id { get; set; }
+
         public string Name { get; set; } = null!;
 
-        public Email? Email { get; set; }
+        public string? Email { get; set; }
 
         public string? PhoneNum { get; set; }
 
-        public string Password { get; set; } = null!;
-
-        //private class Mapping : UserProfile
-        //{
-        //    public Mapping(Profile profile)
-        //    {
-        //        profile.CreateMap<UserProfile, UserProfileBriefDto>();
-        //    }
-        //}
+        private class Mapping : UserProfile
+        {
+            public Mapping(Profile profile)
+            {
+                profile.CreateMap<UserProfile, UserProfileBriefDto>()
+                    .ForMember(d => d.Email, opt => opt.MapFrom(a => a.Email == null ? null : a.Email.Value))
+                    ;
+            }
+        }
     }
 }

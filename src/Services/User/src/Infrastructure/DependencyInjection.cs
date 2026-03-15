@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using User.Application.Common.Interfaces;
 using User.Infrastructure.Interceptors;
 using User.Infrastructure.Persistence;
+using User.Infrastructure.Services;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -29,6 +30,12 @@ namespace Microsoft.Extensions.DependencyInjection
             // 注册接口实现
             services.AddScoped<IApplicationDbContext>(sp =>
                 sp.GetRequiredService<ApplicationDbContext>());
+
+            // 注册密码哈希服务（必需）
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
+
+            // 注册 Token 服务
+            services.AddScoped<ITokenService, TokenService>();
 
             return services;
         }

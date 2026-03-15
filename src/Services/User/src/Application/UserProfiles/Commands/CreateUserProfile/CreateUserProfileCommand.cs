@@ -18,13 +18,16 @@ public class CreateUserProfileCommandHandler : IRequestHandler<CreateUserProfile
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IPasswordHasher _passwordHasher;
 
     public CreateUserProfileCommandHandler(
         IApplicationDbContext context,
-        IMapper mapper)
+        IMapper mapper,
+        IPasswordHasher passwordHasher)
     {
         _context = context;
         _mapper = mapper;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<int> Handle(CreateUserProfileCommand request, CancellationToken cancellationToken)
@@ -35,7 +38,7 @@ public class CreateUserProfileCommandHandler : IRequestHandler<CreateUserProfile
             Name = UserProfileHelper.GetOrCreateName(request.Name),
             Email = request.Email != null ? Email.Create(request.Email) : null,
             PhoneNum = request.PhoneNum,
-            Password = request.Password,
+            Password = _passwordHasher.HashPassword(request.Password),
         };
 
         // 添加到数据库
