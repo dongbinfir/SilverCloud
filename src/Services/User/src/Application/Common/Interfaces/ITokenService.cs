@@ -11,5 +11,6 @@ namespace User.Application.Common.Interfaces
         string GenerateRefreshToken();
         ClaimsPrincipal? ValidateToken(string token);
         TokenResponse GenerateTokenPair(int userId, string email, string phoneNum);
+        int GetRefreshTokenExpirationDays();
     }
 }

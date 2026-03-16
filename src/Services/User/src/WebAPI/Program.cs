@@ -5,6 +5,9 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// --- 关键代码：注册 HttpContext 访问器 ---
+builder.Services.AddHttpContextAccessor();
+
 // 1. 添加 JWT 配置
 builder.Services.Configure<JwtSettings>(
     builder.Configuration.GetSection(JwtSettings.SectionName));

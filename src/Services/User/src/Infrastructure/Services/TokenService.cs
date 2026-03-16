@@ -88,5 +88,10 @@ namespace User.Infrastructure.Services
                 ExpiresAt = DateTime.UtcNow.AddMinutes(_jwtSettings.AccessTokenExpirationMinutes)
             };
         }
+
+        public int GetRefreshTokenExpirationDays()
+        {
+            return _jwtSettings.RefreshTokenExpirationDays;
+        }
     }
 }
