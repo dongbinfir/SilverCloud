@@ -7,10 +7,11 @@ using System.Security.Cryptography;
 using System.Text;
 using User.Application.Common.Interfaces;
 using User.Application.Common.Models;
+using User.Infrastructure.Dependencies;
 
 namespace User.Infrastructure.Services
 {
-    public class TokenService : ITokenService
+    public class TokenService : ITokenService, IScopedDependency<ITokenService>
     {
         private readonly JwtSettings _jwtSettings;
 

@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Scrutor;
 using User.Application.Common.Interfaces;
+using User.Infrastructure.Dependencies;
 using User.Infrastructure.Interceptors;
 using User.Infrastructure.Persistence;
 using User.Infrastructure.Services;
@@ -15,10 +18,8 @@ namespace Microsoft.Extensions.DependencyInjection
             this IServiceCollection services,
             string connectionString)
         {
-            // 1. 注册拦截器 (建议用 Scoped，以便未来扩展记录“当前用户”的功能)
             services.AddScoped<AuditableEntitySaveChangesInterceptor>();
 
-            // 注册 DbContext
             services.AddDbContext<ApplicationDbContext>((sp, options) =>
             {
                 var interceptor = sp.GetRequiredService<AuditableEntitySaveChangesInterceptor>();
@@ -27,15 +28,23 @@ namespace Microsoft.Extensions.DependencyInjection
                     .AddInterceptors(interceptor);
             });
 
-            // 注册接口实现
             services.AddScoped<IApplicationDbContext>(sp =>
                 sp.GetRequiredService<ApplicationDbContext>());
 
-            // 注册密码哈希服务（必需）
-            services.AddScoped<IPasswordHasher, PasswordHasher>();
+            services.Scan(scan => scan
+            .FromAssemblyOf<ApplicationDbContext>()
+                .AddClasses(classes => classes
+                    .AssignableTo(typeof(IScopedDependency<>))
+                    .Where(type => type.Namespace != null && type.Namespace.StartsWith("User.Infrastructure.Services")))
+                .As(type =>
+                {
+                    var i = type.GetInterfaces().First(x =>
+                        x.IsGenericType &&
+                        x.GetGenericTypeDefinition() == typeof(IScopedDependency<>));
 
-            // 注册 Token 服务
-            services.AddScoped<ITokenService, TokenService>();
+                    return [i.GetGenericArguments()[0]];
+                })
+                .WithScopedLifetime());
 
             return services;
         }

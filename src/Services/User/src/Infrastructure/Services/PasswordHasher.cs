@@ -1,8 +1,9 @@
 ﻿using User.Application.Common.Interfaces;
+using User.Infrastructure.Dependencies;
 
 namespace User.Infrastructure.Services
 {
-    public class PasswordHasher : IPasswordHasher
+    public class PasswordHasher : IPasswordHasher, IScopedDependency<IPasswordHasher>
     {
         public string HashPassword(string password)
         {
