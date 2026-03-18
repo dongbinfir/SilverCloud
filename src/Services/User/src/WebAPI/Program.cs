@@ -4,6 +4,7 @@ using Scalar.AspNetCore;
 using System.Threading.RateLimiting;
 using System.Text;
 using WebAPI.Helpers;
+using User.Infrastructure.Persistence.Mongo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,8 +74,7 @@ builder.Services.AddRateLimiter(options =>
 });
 
 // 添加数据连接
-builder.Services.AddInfrastructureServices(
-    builder.Configuration.GetConnectionString("DefaultConnection")!);
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 // 添加 application 服务
 builder.Services.AddApplicationServices();
@@ -86,6 +86,13 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+// 初始化 MongoDB
+using (var scope = app.Services.CreateScope())
+{
+    var mongoDbContext = scope.ServiceProvider.GetRequiredService<IMongoDbContext>();
+    await mongoDbContext.InitializeAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

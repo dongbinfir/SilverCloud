@@ -3,6 +3,7 @@ using User.Application.Common.Extensions;
 using User.Domain.Entities;
 using User.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
+using User.Application.Common.Interfaces;
 
 namespace User.Application.Auths.Commands.Login
 {
@@ -16,17 +17,20 @@ namespace User.Application.Auths.Commands.Login
     public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponseDto>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IRefreshTokenRepository _tokenRepository;
         private readonly IMapper _mapper;
         private readonly IPasswordHasher _passwordHasher;
         private readonly ITokenService _tokenService;
 
         public LoginCommandHandler(
             IApplicationDbContext context,
+            IRefreshTokenRepository tokenRepository,
             IMapper mapper,
             IPasswordHasher passwordHasher,
             ITokenService tokenService)
         {
             _context = context;
+            _tokenRepository = tokenRepository;
             _mapper = mapper;
             _passwordHasher = passwordHasher;
             _tokenService = tokenService;
@@ -64,7 +68,7 @@ namespace User.Application.Auths.Commands.Login
                 user.PhoneNum ?? string.Empty
             );
 
-            // 4. 保存 RefreshToken 到数据库
+            // 4. 保存 RefreshToken 到 MongoDB
             var refreshTokenEntity = new UserRefreshToken
             {
                 UserProfileId = user.Id,
@@ -74,8 +78,7 @@ namespace User.Application.Auths.Commands.Login
                 Created = DateTime.UtcNow
             };
 
-            _context.Set<UserRefreshToken>().Add(refreshTokenEntity);
-            await _context.SaveChangesAsync(cancellationToken);
+            await _tokenRepository.AddAsync(refreshTokenEntity);
 
             // 5. 映射用户信息
             var userDto = _mapper.Map<UserProfileBriefDto>(user);

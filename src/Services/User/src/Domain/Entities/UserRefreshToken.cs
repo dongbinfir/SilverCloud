@@ -2,7 +2,7 @@
 
 namespace User.Domain.Entities
 {
-    public class UserRefreshToken : BaseAuditableEntity<int>
+    public class UserRefreshToken : BaseAuditableEntity<string>
     {
         public int UserProfileId { get; set; }
 
@@ -25,8 +25,8 @@ namespace User.Domain.Entities
         public string? RevokedReason { get; set; }
 
         // 替换关系（滚动更新）
-        public int? PreviousRefreshTokenId { get; set; }
-        public int? NextRefreshTokenId { get; set; }
+        public string? PreviousRefreshTokenId { get; set; }
+        public string? NextRefreshTokenId { get; set; }
 
         // 辅助属性：判断是否已过期
         public bool IsExpired => DateTime.UtcNow >= ExpiresAt;

@@ -1,4 +1,7 @@
 using System.Security.Claims;
+using User.Application.Common.Interfaces;
+using User.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace User.Application.Auths.Commands.RefreshToken
 {
@@ -11,13 +14,16 @@ namespace User.Application.Auths.Commands.RefreshToken
     public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, TokenResponse>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IRefreshTokenRepository _tokenRepository;
         private readonly ITokenService _tokenService;
 
         public RefreshTokenCommandHandler(
             IApplicationDbContext context,
+            IRefreshTokenRepository tokenRepository,
             ITokenService tokenService)
         {
             _context = context;
+            _tokenRepository = tokenRepository;
             _tokenService = tokenService;
         }
 
@@ -37,13 +43,9 @@ namespace User.Application.Auths.Commands.RefreshToken
             }
 
             // 2. 查找 RefreshToken
-            var currentRefreshToken = await _context.Set<UserRefreshToken>()
-                .FirstOrDefaultAsync(rt =>
-                    rt.Token == request.RefreshToken &&
-                    rt.UserProfileId == userId,
-                    cancellationToken);
+            var currentRefreshToken = await _tokenRepository.GetByTokenAsync(request.RefreshToken);
 
-            if (currentRefreshToken == null)
+            if (currentRefreshToken == null || currentRefreshToken.UserProfileId != userId)
             {
                 throw new UnauthorizedAccessException("RefreshToken 不存在");
             }
@@ -91,8 +93,8 @@ namespace User.Application.Auths.Commands.RefreshToken
             currentRefreshToken.NextRefreshTokenId = newRefreshToken.Id;
 
             // 7. 保存更改
-            _context.Set<UserRefreshToken>().Add(newRefreshToken);
-            await _context.SaveChangesAsync(cancellationToken);
+            await _tokenRepository.UpdateAsync(currentRefreshToken);
+            await _tokenRepository.AddAsync(newRefreshToken);
 
             // 8. 返回新的 Token 对
             return newTokens;
@@ -103,17 +105,14 @@ namespace User.Application.Auths.Commands.RefreshToken
         /// </summary>
         private async Task RevokeUserAllRefreshTokensAsync(int userId, string reason, CancellationToken cancellationToken)
         {
-            var activeTokens = await _context.Set<UserRefreshToken>()
-                .Where(rt => rt.UserProfileId == userId && rt.IsActive)
-                .ToListAsync(cancellationToken);
+            var activeTokens = await _tokenRepository.GetActiveTokensByUserIdAsync(userId);
 
             foreach (var token in activeTokens)
             {
                 token.RevokedAt = DateTime.UtcNow;
                 token.RevokedReason = reason;
+                await _tokenRepository.UpdateAsync(token);
             }
-
-            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }
