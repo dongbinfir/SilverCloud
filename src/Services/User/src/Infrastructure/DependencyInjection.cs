@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Scrutor;
 using User.Application.Common.Interfaces;
@@ -36,19 +37,28 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IApplicationDbContext>(sp =>
                 sp.GetRequiredService<ApplicationDbContext>());
 
-            // MongoDB Configuration
+            // 1. 注册配置（Options 模式）
             services.Configure<MongoDbSettings>(options => configuration.GetSection("MongoDbSettings").Bind(options));
 
+            // 2. 注册 IMongoClient
             services.AddSingleton<IMongoClient>(sp =>
             {
-                var mongoSettings = configuration.GetSection("MongoDbSettings").Get<MongoDbSettings>();
-                return new MongoClient(mongoSettings!.ConnectionString);
+                // 从容器中获取已绑定的配置对象
+                var mongoSettings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+
+                if (string.IsNullOrEmpty(mongoSettings.ConnectionString))
+                {
+                    throw new InvalidOperationException("MongoDB ConnectionString is missing in configuration.");
+                }
+
+                return new MongoClient(mongoSettings.ConnectionString);
             });
 
+            // 3. 注册上下文和仓库
             services.AddScoped<IMongoDbContext, MongoDbContext>();
             services.AddScoped<IRefreshTokenRepository, MongoRefreshTokenRepository>();
 
-            // Register all IMongoEntityConfiguration implementations
+            // 4. 批量注册配置（保持原样或使用 Scrutor）
             var configTypes = typeof(ApplicationDbContext).Assembly.GetTypes()
                 .Where(t => typeof(IMongoEntityConfiguration).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
 

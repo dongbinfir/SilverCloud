@@ -2,8 +2,10 @@
 
 namespace User.Domain.Entities
 {
-    public class UserRefreshToken : BaseAuditableEntity<string>
+    public class UserRefreshToken
     {
+        public string Id { get; set; } = null!;
+
         public int UserProfileId { get; set; }
 
         // 实际的 Token 字符串（建议使用加密随机数，不要存明文 JWT）

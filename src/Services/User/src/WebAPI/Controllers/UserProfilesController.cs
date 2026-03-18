@@ -30,6 +30,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult<int>> Create(CreateUserProfileCommand command)
         {
             return await _sender.Send(command);

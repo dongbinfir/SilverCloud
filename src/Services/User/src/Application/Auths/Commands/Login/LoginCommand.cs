@@ -75,7 +75,7 @@ namespace User.Application.Auths.Commands.Login
                 Token = tokens.RefreshToken,
                 ExpiresAt = DateTime.UtcNow.AddDays(_tokenService.GetRefreshTokenExpirationDays()),
                 CreatedByIp = request.IpAddress ?? "Unknown",
-                Created = DateTime.UtcNow
+                //Created = DateTime.UtcNow
             };
 
             await _tokenRepository.AddAsync(refreshTokenEntity);

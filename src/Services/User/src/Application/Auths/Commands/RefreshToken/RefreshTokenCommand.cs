@@ -82,7 +82,7 @@ namespace User.Application.Auths.Commands.RefreshToken
                 Token = newTokens.RefreshToken,
                 ExpiresAt = DateTime.UtcNow.AddDays(_tokenService.GetRefreshTokenExpirationDays()),
                 CreatedByIp = currentRefreshToken.CreatedByIp,
-                Created = DateTime.UtcNow,
+                //Created = DateTime.UtcNow,
                 PreviousRefreshTokenId = currentRefreshToken.Id
             };
 
