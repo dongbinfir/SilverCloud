@@ -23,9 +23,8 @@ namespace WebAPI.Controllers
             _sender = sender;
         }
 
-        [AllowAnonymous]
         [HttpPost("Get")]
-        public async Task<ActionResult<LoginResponseDto>> Get(GetUserProfileQuery query)
+        public async Task<ActionResult<UserProfileBriefDto>> Get(GetUserProfileQuery query)
         {
             return await _sender.Send(query);
         }
