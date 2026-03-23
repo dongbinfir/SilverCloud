@@ -1,17 +1,19 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Scrutor;
 using User.Application.Common.Interfaces;
 using User.Application.Common.Models;
-using User.Infrastructure.Dependencies;
+using User.Infrastructure.Common;
 using User.Infrastructure.Interceptors;
 using User.Infrastructure.Persistence;
-using User.Infrastructure.Persistence.Mongo;
-using User.Infrastructure.Persistence.Mongo.Repositories;
+using User.Infrastructure.Persistence.MongoDb;
+using User.Infrastructure.Persistence.MongoDb.Interfaces;
+using User.Infrastructure.Persistence.MongoDb.Repositories;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace User.Infrastructure
 {
     /// <summary>
     /// Infrastructure 层的服务注册
@@ -72,7 +74,8 @@ namespace Microsoft.Extensions.DependencyInjection
             .FromAssemblyOf<ApplicationDbContext>()
                 .AddClasses(classes => classes
                     .AssignableTo(typeof(IScopedDependency<>))
-                    .Where(type => type.Namespace != null && type.Namespace.StartsWith("User.Infrastructure.Services")))
+                    //.Where(type => type.Namespace != null && type.Namespace.StartsWith("User.Infrastructure.Services"))
+                    )
                 .As(type =>
                 {
                     var i = type.GetInterfaces().First(x =>

@@ -4,7 +4,8 @@ using Scalar.AspNetCore;
 using System.Threading.RateLimiting;
 using System.Text;
 using WebAPI.Helpers;
-using User.Infrastructure.Persistence.Mongo;
+using User.Infrastructure.Persistence.MongoDb.Interfaces;
+using User.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

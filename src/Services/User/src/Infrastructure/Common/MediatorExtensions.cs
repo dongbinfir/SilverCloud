@@ -27,12 +27,19 @@ namespace User.Infrastructure.Common
             // 3. 清空实体内部的事件缓存
             domainEntities.ForEach(entity => entity.ClearDomainEvents());
 
-            // 4. 发送事件
-            // 在 .NET 10 中，如果你的 Handler 很多，可以使用并发
-            var tasks = domainEvents
-                .Select(domainEvent => mediator.Publish(domainEvent));
 
-            await Task.WhenAll(tasks);
+            // 推荐：顺序异步执行, 可以保证事件的处理顺序，适合事件之间有依赖关系的场景
+            foreach (var domainEvent in domainEvents)
+            {
+                await mediator.Publish(domainEvent);
+            }
+
+            //// 4. 发送事件, 并行异步
+            //// 在 .NET 10 中，如果你的 Handler 很多，可以使用并发
+            //var tasks = domainEvents
+            //    .Select(async domainEvent => await mediator.Publish(domainEvent));
+
+            //await Task.WhenAll(tasks);
         }
     }
 }

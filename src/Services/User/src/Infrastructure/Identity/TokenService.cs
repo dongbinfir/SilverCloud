@@ -7,9 +7,9 @@ using System.Security.Cryptography;
 using System.Text;
 using User.Application.Common.Interfaces;
 using User.Application.Common.Models;
-using User.Infrastructure.Dependencies;
+using User.Infrastructure.Common;
 
-namespace User.Infrastructure.Services
+namespace User.Infrastructure.Identity
 {
     public class TokenService : ITokenService, IScopedDependency<ITokenService>
     {

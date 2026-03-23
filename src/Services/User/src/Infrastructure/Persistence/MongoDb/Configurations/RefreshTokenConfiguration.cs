@@ -1,8 +1,10 @@
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using User.Domain.Entities;
+using User.Infrastructure.Common;
+using User.Infrastructure.Persistence.MongoDb.Interfaces;
 
-namespace User.Infrastructure.Persistence.Mongo.Configurations
+namespace User.Infrastructure.Persistence.MongoDb.Configurations
 {
     public class RefreshTokenConfiguration : IMongoEntityConfiguration
     {
@@ -15,8 +17,6 @@ namespace User.Infrastructure.Persistence.Mongo.Configurations
                     cm.AutoMap();
                     // 将 Token 作为 MongoDB 的 _id
                     cm.MapIdProperty(c => c.Id);
-                    // 忽略 BaseEntity 带来的 Id 属性，因为我们使用 Token 作为唯一标识
-                    //cm.UnmapProperty(c => c.Id);
                     cm.SetIgnoreExtraElements(true);
                 });
             }
@@ -24,7 +24,8 @@ namespace User.Infrastructure.Persistence.Mongo.Configurations
 
         public async Task CreateIndexesAsync(IMongoDatabase database)
         {
-            var collection = database.GetCollection<UserRefreshToken>("UserRefreshTokens");
+            var collectionName = MongoCollectionName.For<UserRefreshToken>();
+            var collection = database.GetCollection<UserRefreshToken>(collectionName);
 
             // 1. 创建 TTL 索引：当当前时间超过 ExpiresAt 时，MongoDB 自动删除该文档
             var ttlIndexKeys = Builders<UserRefreshToken>.IndexKeys.Ascending(x => x.ExpiresAt);

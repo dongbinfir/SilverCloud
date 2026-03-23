@@ -1,8 +1,10 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using User.Application.Common.Models;
+using User.Infrastructure.Common;
+using User.Infrastructure.Persistence.MongoDb.Interfaces;
 
-namespace User.Infrastructure.Persistence.Mongo
+namespace User.Infrastructure.Persistence.MongoDb
 {
     public class MongoDbContext : IMongoDbContext
     {
@@ -16,7 +18,7 @@ namespace User.Infrastructure.Persistence.Mongo
         }
 
         public IMongoCollection<T> GetCollection<T>(string? name = null)
-            => _database.GetCollection<T>(name ?? typeof(T).Name + "s");
+            => _database.GetCollection<T>(name ?? MongoCollectionName.For<T>());
 
         public async Task InitializeAsync()
         {

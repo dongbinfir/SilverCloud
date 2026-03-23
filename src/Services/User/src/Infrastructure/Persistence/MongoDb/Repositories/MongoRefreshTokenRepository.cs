@@ -1,8 +1,9 @@
 using MongoDB.Driver;
 using User.Application.Common.Interfaces;
 using User.Domain.Entities;
+using User.Infrastructure.Persistence.MongoDb.Interfaces;
 
-namespace User.Infrastructure.Persistence.Mongo.Repositories
+namespace User.Infrastructure.Persistence.MongoDb.Repositories
 {
     public class MongoRefreshTokenRepository : IRefreshTokenRepository
     {
@@ -10,7 +11,7 @@ namespace User.Infrastructure.Persistence.Mongo.Repositories
 
         public MongoRefreshTokenRepository(IMongoDbContext dbContext)
         {
-            _collection = dbContext.GetCollection<UserRefreshToken>("UserRefreshTokens");
+            _collection = dbContext.GetCollection<UserRefreshToken>();
         }
 
         public async Task<UserRefreshToken?> GetByTokenAsync(string token)

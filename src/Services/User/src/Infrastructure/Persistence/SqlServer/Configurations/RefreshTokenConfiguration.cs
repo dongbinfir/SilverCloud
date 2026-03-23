@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using User.Domain.Entities;
 
-namespace User.Infrastructure.Data.Configurations
+namespace User.Infrastructure.Persistence.SqlServer.Configurations
 {
     //public class UserRefreshTokenConfiguration// : IEntityTypeConfiguration<UserRefreshToken>
     //{

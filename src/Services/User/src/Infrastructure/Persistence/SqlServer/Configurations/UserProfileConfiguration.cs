@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using User.Domain.Entities;
 using User.Domain.ValueObjects;
 
-namespace User.Infrastructure.Data.Configurations
+namespace User.Infrastructure.Persistence.SqlServer.Configurations
 {
     public class UserProfileConfiguration : IEntityTypeConfiguration<UserProfile>
     {

@@ -1,4 +1,4 @@
-namespace User.Infrastructure.Dependencies
+namespace User.Infrastructure.Common
 {
     /// <summary>
     /// 泛型标识接口：用于自动依赖注入扫描

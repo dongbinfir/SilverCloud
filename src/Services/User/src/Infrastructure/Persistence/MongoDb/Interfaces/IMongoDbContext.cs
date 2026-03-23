@@ -1,6 +1,6 @@
 using MongoDB.Driver;
 
-namespace User.Infrastructure.Persistence.Mongo
+namespace User.Infrastructure.Persistence.MongoDb.Interfaces
 {
     public interface IMongoDbContext
     {
