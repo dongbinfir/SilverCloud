@@ -1,11 +1,12 @@
 using MongoDB.Driver;
 using User.Application.Common.Interfaces;
 using User.Domain.Entities;
+using User.Infrastructure.Common;
 using User.Infrastructure.Persistence.MongoDb.Interfaces;
 
 namespace User.Infrastructure.Persistence.MongoDb.Repositories
 {
-    public class MongoRefreshTokenRepository : IRefreshTokenRepository
+    public class MongoRefreshTokenRepository : IRefreshTokenRepository, IScopedDependency<IRefreshTokenRepository>
     {
         private readonly IMongoCollection<UserRefreshToken> _collection;
 

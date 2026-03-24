@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
-using System.Threading.RateLimiting;
 using System.Text;
-using WebAPI.Helpers;
-using User.Infrastructure.Persistence.MongoDb.Interfaces;
+using System.Threading.RateLimiting;
 using User.Infrastructure;
+using User.Infrastructure.Persistence.MongoDb;
+using User.Infrastructure.Persistence.MongoDb.Interfaces;
+using User.Infrastructure.Persistence.SqlServer;
+using WebAPI.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -88,11 +90,22 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// 初始化 MongoDB
 using (var scope = app.Services.CreateScope())
 {
+    // 初始化 MongoDB
     var mongoDbContext = scope.ServiceProvider.GetRequiredService<IMongoDbContext>();
     await mongoDbContext.InitializeAsync();
+
+    var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
+
+    // 判断是否执行 update-database
+    if (app.Environment.IsDevelopment())
+    {
+        await initialiser.InitialiseAsync();
+    }
+
+    // sql 默认数据
+    await initialiser.SeedAsync();
 }
 
 // Configure the HTTP request pipeline.
@@ -101,8 +114,16 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
+else
+{
+    //app.UseExceptionHandler("/Error"); // 生产环境通用错误页
+    app.UseHsts(); // 强制 HTTPS 严格传输UseStaticFiles
+}
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection();// 强制跳转到 HTTPS
+
+// 静态文件（如果你有图片或网页，放在这里可以跳过认证提高速度）
+app.UseStaticFiles();
 
 // --- 启用速率限制 ---
 app.UseRateLimiter();

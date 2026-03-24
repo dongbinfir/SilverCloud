@@ -6,7 +6,7 @@ using User.Infrastructure.Persistence.MongoDb.Interfaces;
 
 namespace User.Infrastructure.Persistence.MongoDb
 {
-    public class MongoDbContext : IMongoDbContext
+    public class MongoDbContext : IMongoDbContext, IScopedDependency<IMongoDbContext>
     {
         private readonly IMongoDatabase _database;
         private readonly IEnumerable<IMongoEntityConfiguration> _configurations;

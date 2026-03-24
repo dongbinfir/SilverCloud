@@ -3,15 +3,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using Scrutor;
 using User.Application.Common.Interfaces;
 using User.Application.Common.Models;
 using User.Infrastructure.Common;
 using User.Infrastructure.Interceptors;
-using User.Infrastructure.Persistence;
-using User.Infrastructure.Persistence.MongoDb;
 using User.Infrastructure.Persistence.MongoDb.Interfaces;
-using User.Infrastructure.Persistence.MongoDb.Repositories;
+using User.Infrastructure.Persistence.SqlServer;
 
 namespace User.Infrastructure
 {
@@ -57,8 +54,8 @@ namespace User.Infrastructure
             });
 
             // 3. 注册上下文和仓库
-            services.AddScoped<IMongoDbContext, MongoDbContext>();
-            services.AddScoped<IRefreshTokenRepository, MongoRefreshTokenRepository>();
+            //services.AddScoped<IMongoDbContext, MongoDbContext>();
+            //services.AddScoped<IRefreshTokenRepository, MongoRefreshTokenRepository>();
 
             // 4. 批量注册配置（保持原样或使用 Scrutor）
             var configTypes = typeof(ApplicationDbContext).Assembly.GetTypes()
@@ -69,7 +66,7 @@ namespace User.Infrastructure
                 services.AddSingleton(typeof(IMongoEntityConfiguration), type);
             }
 
-            // Existing Scrutor scanning
+            // Existing Scrutor scanning, 实现自动 AddScoped 注册 IScopedDependency<> 的实现类
             services.Scan(scan => scan
             .FromAssemblyOf<ApplicationDbContext>()
                 .AddClasses(classes => classes

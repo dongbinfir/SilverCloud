@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using User.Application.Common.Interfaces;
 using User.Infrastructure.Common;
 
-namespace User.Infrastructure.Persistence
+namespace User.Infrastructure.Persistence.SqlServer
 {
     public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
