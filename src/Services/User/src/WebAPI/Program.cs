@@ -3,10 +3,12 @@ using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System.Text;
 using System.Threading.RateLimiting;
+using User.Application.Common.Interfaces;
 using User.Infrastructure;
 using User.Infrastructure.Persistence.MongoDb.Interfaces;
 using User.Infrastructure.Persistence.SqlServer;
 using WebAPI.Helpers;
+using WebAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -86,6 +88,8 @@ builder.Services.AddControllers();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 var app = builder.Build();
 
