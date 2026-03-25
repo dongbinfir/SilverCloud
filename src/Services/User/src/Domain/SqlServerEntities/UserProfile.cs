@@ -1,7 +1,7 @@
 ﻿using User.Domain.Common;
 using User.Domain.ValueObjects;
 
-namespace User.Domain.Entities
+namespace User.Domain.SqlServerEntities
 {
     public class UserProfile : BaseAuditableEntity<int>
     {

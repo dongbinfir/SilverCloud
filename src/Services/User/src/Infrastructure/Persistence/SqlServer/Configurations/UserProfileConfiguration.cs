@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using User.Domain.Entities;
+using User.Domain.SqlServerEntities;
 using User.Domain.ValueObjects;
 
 namespace User.Infrastructure.Persistence.SqlServer.Configurations

@@ -6,7 +6,7 @@
 
         // 内部私有列表，用于实际操作
         private readonly List<IDomainEvent> _domainEvents = new();
-        
+
         // 显式实现接口或正常暴露只读版本
         public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 

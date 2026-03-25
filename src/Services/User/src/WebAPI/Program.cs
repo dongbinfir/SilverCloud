@@ -4,7 +4,6 @@ using Scalar.AspNetCore;
 using System.Text;
 using System.Threading.RateLimiting;
 using User.Infrastructure;
-using User.Infrastructure.Persistence.MongoDb;
 using User.Infrastructure.Persistence.MongoDb.Interfaces;
 using User.Infrastructure.Persistence.SqlServer;
 using WebAPI.Helpers;

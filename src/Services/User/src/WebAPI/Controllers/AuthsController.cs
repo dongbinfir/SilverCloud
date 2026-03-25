@@ -1,11 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.RateLimiting;
-using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using MediatR;
 using User.Application.Auths.Commands.Login;
-using User.Application.Auths.Commands.RefreshToken;
 using User.Application.Auths.Commands.Logout;
+using User.Application.Auths.Commands.RefreshToken;
 using User.Application.Auths.Dtos;
 
 namespace WebAPI.Controllers

@@ -1,5 +1,3 @@
-using User.Domain.Entities;
-
 namespace User.Application.Common.Interfaces
 {
     public interface IRefreshTokenRepository

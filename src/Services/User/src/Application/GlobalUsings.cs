@@ -7,5 +7,5 @@ global using User.Application.Common.Exceptions;
 global using User.Application.Common.Interfaces;
 global using User.Application.Common.Mappings;
 global using User.Application.Common.Models;
-global using User.Domain.Common;
-global using User.Domain.Entities;
+global using User.Domain.MongoDbEntities;
+global using User.Domain.SqlServerEntities;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace User.Application.UserProfiles.Dtos
+﻿namespace User.Application.UserProfiles.Dtos
 {
     public class LoginResponseDto
     {

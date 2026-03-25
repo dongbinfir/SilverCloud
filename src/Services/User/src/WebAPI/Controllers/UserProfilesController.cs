@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using User.Application.UserProfiles.Commands.CreateUserProfile;
 using User.Application.UserProfiles.Commands.DeleteUserProfile;
 using User.Application.UserProfiles.Commands.UpdateUserProfile;

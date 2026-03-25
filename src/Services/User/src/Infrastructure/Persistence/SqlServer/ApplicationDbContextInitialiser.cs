@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using User.Domain.Entities;
+using User.Domain.SqlServerEntities;
 using User.Domain.ValueObjects;
 
 namespace User.Infrastructure.Persistence.SqlServer

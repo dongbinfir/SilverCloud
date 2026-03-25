@@ -1,6 +1,6 @@
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
-using User.Domain.Entities;
+using User.Domain.MongoDbEntities;
 using User.Infrastructure.Common;
 using User.Infrastructure.Persistence.MongoDb.Interfaces;
 

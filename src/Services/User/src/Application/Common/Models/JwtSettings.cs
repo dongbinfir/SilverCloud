@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace User.Application.Common.Models
+﻿namespace User.Application.Common.Models
 {
     public class JwtSettings
     {

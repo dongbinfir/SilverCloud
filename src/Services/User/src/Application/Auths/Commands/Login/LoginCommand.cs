@@ -1,9 +1,6 @@
-using User.Application.UserProfiles.Dtos;
 using User.Application.Common.Extensions;
-using User.Domain.Entities;
+using User.Application.UserProfiles.Dtos;
 using User.Domain.ValueObjects;
-using Microsoft.EntityFrameworkCore;
-using User.Application.Common.Interfaces;
 
 namespace User.Application.Auths.Commands.Login
 {

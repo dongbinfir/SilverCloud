@@ -1,5 +1,4 @@
-﻿
-namespace User.Application.UserProfiles.Commands.UpdateUserProfile
+﻿namespace User.Application.UserProfiles.Commands.UpdateUserProfile
 {
     public record UpdateUserProfileCommand : IRequest<Unit>, IMapToWithExcludedId<UserProfile>
     {

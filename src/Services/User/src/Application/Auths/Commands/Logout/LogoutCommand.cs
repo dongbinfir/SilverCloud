@@ -1,8 +1,3 @@
-using MediatR;
-using User.Application.Common.Interfaces;
-using User.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-
 namespace User.Application.Auths.Commands.Logout
 {
     public record LogoutCommand : IRequest<Unit>

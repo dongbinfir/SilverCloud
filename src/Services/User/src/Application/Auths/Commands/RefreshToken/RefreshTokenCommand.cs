@@ -1,7 +1,4 @@
 using System.Security.Claims;
-using User.Application.Common.Interfaces;
-using User.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace User.Application.Auths.Commands.RefreshToken
 {
