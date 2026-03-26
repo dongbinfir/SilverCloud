@@ -9,10 +9,12 @@ namespace User.Infrastructure.Persistence.MongoDb.Repositories
     public class MongoRefreshTokenRepository : IRefreshTokenRepository, IScopedDependency<IRefreshTokenRepository>
     {
         private readonly IMongoCollection<UserRefreshToken> _collection;
+        private readonly ICurrentUserService _currentUserService;
 
-        public MongoRefreshTokenRepository(IMongoDbContext dbContext)
+        public MongoRefreshTokenRepository(IMongoDbContext dbContext, ICurrentUserService currentUserService)
         {
             _collection = dbContext.GetCollection<UserRefreshToken>();
+            _currentUserService = currentUserService;
         }
 
         public async Task<UserRefreshToken?> GetByTokenAsync(string token)
@@ -32,11 +34,17 @@ namespace User.Infrastructure.Persistence.MongoDb.Repositories
 
         public async Task AddAsync(UserRefreshToken refreshToken)
         {
+            refreshToken.Created = DateTime.Now;
+            refreshToken.CreatedBy = _currentUserService.UserId;
+
             await _collection.InsertOneAsync(refreshToken);
         }
 
         public async Task UpdateAsync(UserRefreshToken refreshToken)
         {
+            refreshToken.LastModified = DateTime.Now;
+            refreshToken.LastModifiedBy = _currentUserService.UserId;
+
             await _collection.ReplaceOneAsync(x => x.Token == refreshToken.Token, refreshToken);
         }
 

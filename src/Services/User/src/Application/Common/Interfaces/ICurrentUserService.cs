@@ -5,6 +5,6 @@
         int? UserId { get; }
         string? UserName { get; }
         string? Email { get; }
-        string? PhoneNumber { get; }
+        string? PhoneNum { get; }
     }
 }

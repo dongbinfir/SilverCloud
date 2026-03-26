@@ -19,13 +19,14 @@ namespace User.Infrastructure.Identity
             _jwtSettings = jwtSettings.Value;
         }
 
-        public string GenerateAccessToken(int userId, string email, string phoneNum)
+        public string GenerateAccessToken(int userId,string userName, string email, string phoneNum)
         {
             var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, userId.ToString()),
             new(JwtRegisteredClaimNames.Sub, userId.ToString()),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new(ClaimTypes.Name, userName),
             new(ClaimTypes.Email, email ?? string.Empty),
             new(ClaimTypes.MobilePhone, phoneNum ?? string.Empty)
         };
@@ -79,11 +80,11 @@ namespace User.Infrastructure.Identity
             }
         }
 
-        public TokenResponse GenerateTokenPair(int userId, string email, string phoneNum)
+        public TokenResponse GenerateTokenPair(int userId,string userName, string email, string phoneNum)
         {
             return new TokenResponse
             {
-                AccessToken = GenerateAccessToken(userId, email, phoneNum),
+                AccessToken = GenerateAccessToken(userId, userName, email, phoneNum),
                 RefreshToken = GenerateRefreshToken(),
                 ExpiresAt = DateTime.UtcNow.AddMinutes(_jwtSettings.AccessTokenExpirationMinutes)
             };

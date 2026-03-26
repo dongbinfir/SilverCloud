@@ -13,15 +13,18 @@ namespace User.Application.Auths.Commands.RefreshToken
         private readonly IApplicationDbContext _context;
         private readonly IRefreshTokenRepository _tokenRepository;
         private readonly ITokenService _tokenService;
+        private readonly ICurrentUserService _currentUserService;
 
         public RefreshTokenCommandHandler(
             IApplicationDbContext context,
             IRefreshTokenRepository tokenRepository,
-            ITokenService tokenService)
+            ITokenService tokenService,
+            ICurrentUserService currentUserService)
         {
             _context = context;
             _tokenRepository = tokenRepository;
             _tokenService = tokenService;
+            _currentUserService = currentUserService;
         }
 
         public async Task<TokenResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
@@ -33,16 +36,10 @@ namespace User.Application.Auths.Commands.RefreshToken
                 throw new UnauthorizedAccessException("无效的 AccessToken");
             }
 
-            var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (!int.TryParse(userIdClaim, out int userId))
-            {
-                throw new UnauthorizedAccessException("AccessToken 中的用户标识无效");
-            }
-
             // 2. 查找 RefreshToken
             var currentRefreshToken = await _tokenRepository.GetByTokenAsync(request.RefreshToken);
 
-            if (currentRefreshToken == null || currentRefreshToken.UserProfileId != userId)
+            if (currentRefreshToken == null || currentRefreshToken.UserProfileId != _currentUserService.UserId)
             {
                 throw new UnauthorizedAccessException("RefreshToken 不存在");
             }
@@ -51,7 +48,7 @@ namespace User.Application.Auths.Commands.RefreshToken
             if (currentRefreshToken.RevokedAt != null)
             {
                 // 如果已被撤销，可能是安全事件，撤销该用户所有 Token
-                await RevokeUserAllRefreshTokensAsync(userId, "检测到安全威胁：使用了已撤销的 RefreshToken", cancellationToken);
+                await RevokeUserAllRefreshTokensAsync(_currentUserService.UserId.Value, "检测到安全威胁：使用了已撤销的 RefreshToken", cancellationToken);
                 throw new UnauthorizedAccessException("RefreshToken 已被撤销");
             }
 
@@ -62,24 +59,24 @@ namespace User.Application.Auths.Commands.RefreshToken
 
             var currentUserprofile = await _context.Set<UserProfile>()
                 .FirstAsync(rt =>
-                    rt.Id == userId,
+                    rt.Id == _currentUserService.UserId,
                     cancellationToken);
 
             // 4. 生成新的 Token 对
             var newTokens = _tokenService.GenerateTokenPair(
-                currentUserprofile.Id,
-                currentUserprofile.Email?.Value ?? string.Empty,
-                currentUserprofile.PhoneNum ?? string.Empty
+                _currentUserService.UserId.Value,
+                _currentUserService.UserName ?? string.Empty,
+                _currentUserService.Email ?? string.Empty,
+                _currentUserService.PhoneNum ?? string.Empty
             );
 
             // 5. 创建新的 RefreshToken 记录
-            var newRefreshToken = new UserRefreshToken
+            var newRefreshToken = new UserRefreshToken()
             {
                 UserProfileId = currentRefreshToken.UserProfileId,
                 Token = newTokens.RefreshToken,
                 ExpiresAt = DateTime.UtcNow.AddDays(_tokenService.GetRefreshTokenExpirationDays()),
                 CreatedByIp = currentRefreshToken.CreatedByIp,
-                //Created = DateTime.UtcNow,
                 PreviousRefreshTokenId = currentRefreshToken.Id
             };
 

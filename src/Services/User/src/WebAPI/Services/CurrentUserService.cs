@@ -28,6 +28,6 @@ namespace WebAPI.Services
 
         public string? Email => User?.FindFirst(ClaimTypes.Email)?.Value;
 
-        public string? PhoneNumber => User?.FindFirst(ClaimTypes.MobilePhone)?.Value;
+        public string? PhoneNum => User?.FindFirst(ClaimTypes.MobilePhone)?.Value;
     }
 }

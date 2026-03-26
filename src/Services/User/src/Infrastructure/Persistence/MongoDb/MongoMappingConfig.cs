@@ -1,4 +1,7 @@
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.IdGenerators;
+using MongoDB.Bson.Serialization.Serializers;
 using User.Domain.Common;
 
 namespace User.Infrastructure.Persistence.MongoDb
@@ -31,7 +34,8 @@ namespace User.Infrastructure.Persistence.MongoDb
                     {
                         cm.AutoMap();
                         // 统一将领域基类的 Id 映射为 MongoDB 主键字段 _id。
-                        cm.MapIdMember(c => c.Id);
+                        cm.MapIdMember(c => c.Id)
+                            .SetSerializer(new StringSerializer(BsonType.String)); //在 application 没有安装 objectid 包的情况下，使用 string 存储 GuidV7 类型的 Id。
                         cm.SetIsRootClass(true);
                         cm.SetIgnoreExtraElements(true);
                     });

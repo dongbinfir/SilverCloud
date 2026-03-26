@@ -47,13 +47,8 @@ namespace User.Application.Auths.Commands.Login
                     (u.Email == identityEmail || u.PhoneNum == request.Identity),
                     cancellationToken);
 
-            if (user == null)
-            {
-                throw new UnauthorizedAccessException("用户名或密码错误");
-            }
-
             // 2. 验证密码
-            if (!_passwordHasher.VerifyPassword(request.Password, user.Password))
+            if (user == null || !_passwordHasher.VerifyPassword(request.Password, user.Password))
             {
                 throw new UnauthorizedAccessException("用户名或密码错误");
             }
@@ -61,12 +56,13 @@ namespace User.Application.Auths.Commands.Login
             // 3. 生成 Token 对
             var tokens = _tokenService.GenerateTokenPair(
                 user.Id,
+                user.Name,
                 user.Email?.Value ?? string.Empty,
                 user.PhoneNum ?? string.Empty
             );
 
             // 4. 保存 RefreshToken 到 MongoDB
-            var refreshTokenEntity = new UserRefreshToken
+            var refreshTokenEntity = new UserRefreshToken()
             {
                 UserProfileId = user.Id,
                 Token = tokens.RefreshToken,
