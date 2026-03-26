@@ -22,9 +22,10 @@ namespace User.Infrastructure.Persistence.MongoDb
 
         public async Task InitializeAsync()
         {
+            MongoMappingConfig.Register();
+
             foreach (var config in _configurations)
             {
-                config.Configure();
                 await config.CreateIndexesAsync(_database);
             }
         }

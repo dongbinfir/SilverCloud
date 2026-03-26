@@ -1,4 +1,3 @@
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using User.Domain.MongoDbEntities;
 using User.Infrastructure.Common;
@@ -8,20 +7,6 @@ namespace User.Infrastructure.Persistence.MongoDb.Configurations
 {
     public class RefreshTokenConfiguration : IMongoEntityConfiguration
     {
-        public void Configure()
-        {
-            if (!BsonClassMap.IsClassMapRegistered(typeof(UserRefreshToken)))
-            {
-                BsonClassMap.RegisterClassMap<UserRefreshToken>(cm =>
-                {
-                    cm.AutoMap();
-                    // 将 Token 作为 MongoDB 的 _id
-                    cm.MapIdProperty(c => c.Id);
-                    cm.SetIgnoreExtraElements(true);
-                });
-            }
-        }
-
         public async Task CreateIndexesAsync(IMongoDatabase database)
         {
             var collectionName = MongoCollectionName.For<UserRefreshToken>();

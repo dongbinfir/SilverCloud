@@ -35,7 +35,10 @@ namespace User.Infrastructure
 
             services.AddScoped<IApplicationDbContext>(sp =>
                 sp.GetRequiredService<ApplicationDbContext>());
+            // 添加这一行：注册 Initialiser
+            services.AddScoped<ApplicationDbContextInitialiser>();
 
+            #region 配置 MongoDB 相关服务
             // 1. 注册配置（Options 模式）
             services.Configure<MongoDbSettings>(options => configuration.GetSection("MongoDbSettings").Bind(options));
 
@@ -65,6 +68,7 @@ namespace User.Infrastructure
             {
                 services.AddSingleton(typeof(IMongoEntityConfiguration), type);
             }
+            #endregion
 
             // Existing Scrutor scanning, 实现自动 AddScoped 注册 IScopedDependency<> 的实现类
             services.Scan(scan => scan
