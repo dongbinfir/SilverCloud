@@ -7,25 +7,25 @@ import {
   ProConfigProvider,
   ProFormCheckbox,
   ProFormText,
-  setAlpha
+//  setAlpha
 } from "@ant-design/pro-components";
 import { theme } from "antd";
-import type { CSSProperties } from "react";
+//import type { CSSProperties } from "react";
 import { useState } from "react";
 
 type LoginType = "account";
 
-export default () => {
+const LoginPage = () => {
   const { token } = theme.useToken();
-  const [loginType, setLoginType] = useState<LoginType>("account");
+  const [loginType] = useState<LoginType>("account");
 
-  const iconStyles: CSSProperties = {
-    marginInlineStart: "16px",
-    color: setAlpha(token.colorTextBase, 0.2),
-    fontSize: "24px",
-    verticalAlign: "middle",
-    cursor: "pointer",
-  };
+  //const iconStyles: CSSProperties = {
+  //  marginInlineStart: "16px",
+  //  color: setAlpha(token.colorTextBase, 0.2),
+  //  fontSize: "24px",
+  //  verticalAlign: "middle",
+  //  cursor: "pointer",
+  //};
 
   return (
     <ProConfigProvider hashed={false}>
@@ -183,3 +183,5 @@ export default () => {
     </ProConfigProvider>
   );
 };
+
+export default LoginPage;
