@@ -83,6 +83,18 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 // 添加 application 服务
 builder.Services.AddApplicationServices();
 
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAdminWeb", policy =>
+    {
+        policy.WithOrigins("http://localhost:7041", "https://localhost:7041")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 // Add services to the container.
 builder.Services.AddControllers();
 
@@ -124,6 +136,9 @@ else
 }
 
 app.UseHttpsRedirection();// 强制跳转到 HTTPS
+
+// --- 启用 CORS（必须在 Auth 之前）---
+app.UseCors("AllowAdminWeb");
 
 // 静态文件（如果你有图片或网页，放在这里可以跳过认证提高速度）
 app.UseStaticFiles();

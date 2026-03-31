@@ -1,8 +1,9 @@
 import axios, { type AxiosRequestConfig, type AxiosInstance } from 'axios';
+import { useAuthStore } from '@store/authStore';
 
 const setupInterceptors = (instance: AxiosInstance) => {
   instance.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token');
+    const token = useAuthStore.getState().token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -20,8 +21,6 @@ export const createAxiosInstance = (baseURL: string) => {
 };
 
 // 默认实例（API 网关）
-export const axiosInstance = createAxiosInstance(
-  import.meta.env.VITE_API_BASE_URL,
-);
+export const axiosInstance = createAxiosInstance('');
 
 export default axiosInstance;

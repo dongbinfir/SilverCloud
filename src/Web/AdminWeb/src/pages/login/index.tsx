@@ -12,12 +12,17 @@ import {
 import { theme } from "antd";
 //import type { CSSProperties } from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Login as loginApi } from "@components/Auths/AuthsAPI";
+import { useAuthStore } from "@store/authStore";
 
 type LoginType = "account";
 
 const LoginPage = () => {
   const { token } = theme.useToken();
   const [loginType] = useState<LoginType>("account");
+  const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
 
   //const iconStyles: CSSProperties = {
   //  marginInlineStart: "16px",
@@ -34,6 +39,28 @@ const LoginPage = () => {
           logo="https://github.githubassets.com/favicons/favicon.png"
           title="Silver Cloud"
           subTitle="全球最大的平台"
+          onFinish={async (values: { username: string; password: string }) => {
+            const result = await loginApi({
+              identity: values.username,
+              password: values.password,
+            }) as unknown as {
+              accessToken: string;
+              refreshToken: string;
+              userId: string;
+              userName: string;
+              phoneNum?: string;
+              email?: string;
+            };
+            login({
+              token: result.accessToken,
+              refreshToken: result.refreshToken,
+              userId: result.userId,
+              userName: result.userName,
+              phoneNum: result.phoneNum,
+              email: result.email,
+            });
+            navigate('/dashboard', { replace: true });
+          }}
         // actions={
         //   <Space>
         //     其他登录方式
