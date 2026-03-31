@@ -7,12 +7,17 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "gen:api": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 orval"
+  },
+  "overrides": {
+    "path-to-regexp": "^8.4.0"
   },
   "dependencies": {
     "@ant-design/icons": "^6.1.1",
     "@ant-design/pro-components": "^2.8.10",
     "antd": "^5.29.3",
+    "axios": "^1.14.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.13.2"
@@ -23,10 +28,12 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
+    "cross-env": "^10.1.0",
     "eslint": "^9.39.4",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
+    "orval": "^8.6.2",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.57.0",
     "vite": "^8.0.1"
