@@ -9,7 +9,7 @@ using User.Application.UserProfiles.Queries.SearchUserProfiles;
 namespace WebAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("user/[controller]")]
     [Authorize]  // 需要认证
     public class UserProfilesController : ControllerBase
     {

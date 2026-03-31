@@ -12,7 +12,7 @@ namespace WebAPI.Controllers
     /// 认证相关 API
     /// </summary>
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("user/[controller]")]
     public class AuthsController : ControllerBase
     {
         private readonly ISender _sender;
