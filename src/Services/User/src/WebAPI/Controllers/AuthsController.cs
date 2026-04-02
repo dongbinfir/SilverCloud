@@ -61,7 +61,7 @@ namespace WebAPI.Controllers
         /// <param name="request">登录请求</param>
         /// <returns>登录响应，包含用户信息和 Token</returns>
         [AllowAnonymous]
-        [EnableRateLimiting("auth")]
+        [EnableRateLimiting("IdentityAuth")]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
         {
@@ -93,7 +93,7 @@ namespace WebAPI.Controllers
         /// <param name="request">刷新 Token 请求</param>
         /// <returns>新的 Token 对</returns>
         [AllowAnonymous]
-        [EnableRateLimiting("auth")]
+        [EnableRateLimiting("IdentityAuth")]
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestDto request)
         {
