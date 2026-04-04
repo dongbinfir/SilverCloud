@@ -1,4 +1,5 @@
 using Scalar.AspNetCore;
+using User.Application;
 using User.Infrastructure;
 using User.Infrastructure.Persistence.MongoDb.Interfaces;
 using User.Infrastructure.Persistence.SqlServer;

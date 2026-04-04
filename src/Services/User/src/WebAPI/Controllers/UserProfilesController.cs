@@ -3,6 +3,7 @@ using User.Application.UserProfiles.Commands.CreateUserProfile;
 using User.Application.UserProfiles.Commands.DeleteUserProfile;
 using User.Application.UserProfiles.Commands.UpdateUserProfile;
 using User.Application.UserProfiles.Dtos;
+using User.Application.UserProfiles.Queries.GetTranslate;
 using User.Application.UserProfiles.Queries.GetUserProfile;
 using User.Application.UserProfiles.Queries.SearchUserProfiles;
 
@@ -31,6 +32,13 @@ namespace WebAPI.Controllers
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult<int>> Create(CreateUserProfileCommand command)
+        {
+            return await _sender.Send(command);
+        }
+
+        [HttpPost("Translate")]
+        [AllowAnonymous]
+        public async Task<ActionResult<string>> Translate(GetTranslateQuery command)
         {
             return await _sender.Send(command);
         }

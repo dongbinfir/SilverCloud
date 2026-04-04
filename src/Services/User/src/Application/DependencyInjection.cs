@@ -1,6 +1,7 @@
-﻿using System.Reflection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace User.Application
 {
     /// <summary>
     /// Application 层的服务注册

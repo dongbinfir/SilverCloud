@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using User.Infrastructure.Caching;
 using User.Infrastructure.Common;
+using User.Infrastructure.ExternalServices;
 using User.Infrastructure.Persistence.MongoDb;
 using User.Infrastructure.Persistence.SqlServer;
 
@@ -22,6 +23,8 @@ namespace User.Infrastructure
             services.AddMongoDbServices(configuration);
 
             services.AddCacheServices(configuration);
+
+            services.AddExternalServices(configuration);
 
             // Existing Scrutor scanning, 实现自动 AddScoped 注册 IScopedDependency<> 的实现类
             services.Scan(scan => scan
