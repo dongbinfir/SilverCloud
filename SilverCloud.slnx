@@ -1,4 +1,10 @@
 <Solution>
+  <Folder Name="/Shared/" />
+  <Folder Name="/Shared/src/">
+    <Project Path="src/Services/Shared/src/Shared.Application/Shared.Application.csproj" Id="afe554c0-7e04-49aa-be4b-b4aacd8de98c" />
+    <Project Path="src/Services/Shared/src/Shared.Domain/Shared.Domain.csproj" Id="55cc11ff-9d8f-40e6-be38-981f58df6c1d" />
+    <Project Path="src/Services/Shared/src/Shared.Infrastructure/Shared.Infrastructure.csproj" Id="d9835566-22af-4892-8ce5-cc4c04565dcf" />
+  </Folder>
   <Folder Name="/User/" />
   <Folder Name="/User/src/">
     <Project Path="src/Services/User/src/Application/Application.csproj" />
