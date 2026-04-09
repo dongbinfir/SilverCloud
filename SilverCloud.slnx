@@ -1,4 +1,11 @@
 <Solution>
+  <Folder Name="/Identity/" />
+  <Folder Name="/Identity/src/">
+    <Project Path="src/Services/Identity/src/Application/Application.csproj" Id="2987390c-62a2-48da-ad62-161c8856fa7e" />
+    <Project Path="src/Services/Identity/src/Domain/Domain.csproj" Id="56fb2dce-82eb-4f59-8e4e-9e2f3bea8766" />
+    <Project Path="src/Services/Identity/src/Infrastructure/Infrastructure.csproj" Id="b4099dd9-d48a-4a17-930b-58a4a0bf6975" />
+    <Project Path="src/Services/Identity/src/WebAPI/WebAPI.csproj" Id="b586aa9c-eaaf-465b-90f9-a583c9a80373" />
+  </Folder>
   <Folder Name="/Shared/" />
   <Folder Name="/Shared/src/">
     <Project Path="src/Services/Shared/src/Shared.Application/Shared.Application.csproj" Id="afe554c0-7e04-49aa-be4b-b4aacd8de98c" />
