@@ -1,0 +1,9 @@
+﻿global using Shared.Application.Commons.Models;
+global using Shared.Infrastructure.Commons;
+global using Shared.Infrastructure.Persistence.MongoDb.Interfaces;
+global using Microsoft.Extensions.Options;
+global using MongoDB.Driver;
+global using Shared.Application.Commons.Interfaces;
+global using Shared.Domain.Common;
+global using Shared.Domain.ValueObjects;
+global using Shared.Infrastructure.Interceptors;

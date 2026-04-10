@@ -1,0 +1,15 @@
+﻿namespace Identity.Application.Commons.Interfaces
+{
+    public interface IPasswordHashService
+    {
+        /// <summary>
+        /// 对密码进行哈希处理
+        /// </summary>
+        string HashPassword(string password);
+
+        /// <summary>
+        /// 验证密码是否匹配哈希值
+        /// </summary>
+        bool VerifyPassword(string password, string hashedPassword);
+    }
+}
