@@ -2,7 +2,7 @@ using Identity.Infrastructure.Persistence.MongoDb;
 using Identity.Infrastructure.Persistence.SqlServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.Infrastructure.Caching;
+using Shared.Infrastructure;
 
 namespace Identity.Infrastructure
 {
@@ -19,7 +19,7 @@ namespace Identity.Infrastructure
 
             services.AddMongoDbServices(configuration);
 
-            services.AddSharedCacheServices(configuration);
+            services.AddSharedInfrastructureServices(configuration);
 
             // Existing Scrutor scanning, 实现自动 AddScoped 注册 IScopedDependency<> 的实现类
             services.Scan(scan => scan

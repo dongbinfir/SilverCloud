@@ -1,13 +1,14 @@
 using Identity.Application.Commons.MongoDbRepositories;
 using Identity.Domain.MongoDbEntities;
+using Shared.Infrastructure.Persistence.MongoDb.Repositories;
 
 namespace Identity.Infrastructure.Persistence.MongoDb.Repositories
 {
     public class AccountRefreshTokenRepository : MongoDbRepository<AccountRefreshToken>, IAccountRefreshTokenRepository, IScopedDependency<IAccountRefreshTokenRepository>
     {
-        public AccountRefreshTokenRepository(IMongoCollection<AccountRefreshToken> _collection,
-        ICurrentAccountService _currentAccountService)
-        : base(_collection, _currentAccountService)
+        public AccountRefreshTokenRepository(IMongoDbContext mongoDbContext,
+        ICurrentAccountService currentAccountService)
+        : base(mongoDbContext, currentAccountService)
         {
         }
 

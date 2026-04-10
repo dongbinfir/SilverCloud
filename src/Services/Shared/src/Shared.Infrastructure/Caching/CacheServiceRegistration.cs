@@ -11,7 +11,7 @@ namespace Shared.Infrastructure.Caching
     /// </summary>
     public static class CacheServiceRegistration
     {
-        public static IServiceCollection AddSharedCacheServices(
+        public static IServiceCollection AddCacheServices(
             this IServiceCollection services,
             IConfiguration configuration)
         {

@@ -1,19 +1,20 @@
 using MongoDB.Driver;
 using Shared.Application.Commons.Interfaces;
 using Shared.Domain.Common;
+using Shared.Infrastructure.Persistence.MongoDb.Interfaces;
 using System.Linq.Expressions;
 
-namespace Identity.Infrastructure.Persistence.MongoDb.Repositories
+namespace Shared.Infrastructure.Persistence.MongoDb.Repositories
 {
-    public abstract class MongoDbRepository<T> : IMongoDbRepository<T> where T : MongoEntity
+    public class MongoDbRepository<T> : IMongoDbRepository<T> where T : MongoEntity
     {
         protected readonly IMongoCollection<T> _collection;
         protected readonly ICurrentAccountService _currentAccountService;
 
-        protected MongoDbRepository(IMongoCollection<T> collection,
+        public MongoDbRepository(IMongoDbContext mongoDbContext,
             ICurrentAccountService currentAccountService)
         {
-            _collection = collection;
+            _collection = mongoDbContext.GetCollection<T>();
             _currentAccountService = currentAccountService;
         }
 
