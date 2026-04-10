@@ -42,7 +42,7 @@ using (var scope = app.Services.CreateScope())
     }
 
     // sql 默认数据
-    //await initialiser.SeedAsync();
+    await initialiser.SeedAsync();
 }
 
 // Configure the HTTP request pipeline.
