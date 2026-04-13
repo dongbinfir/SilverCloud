@@ -12,7 +12,9 @@ namespace Identity.Application
         {
             // 注册 AutoMapper
             services.AddAutoMapper(cfg =>
-            cfg.AddMaps(Assembly.GetExecutingAssembly()));
+            {
+                cfg.AddProfile(new MappingProfile(Assembly.GetExecutingAssembly()));
+            });
 
             // 注册 MediatR
             services.AddMediatR(cfg =>

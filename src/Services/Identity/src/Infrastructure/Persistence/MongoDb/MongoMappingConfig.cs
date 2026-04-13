@@ -7,7 +7,7 @@ namespace Identity.Infrastructure.Persistence.MongoDb
 {
     public static class MongoMappingConfig
     {
-        private const string MongoEntitiesNamespace = "User.Domain.MongoDbEntities";
+        private const string MongoEntitiesNamespace = "Identity.Domain.MongoDbEntities";
         private static readonly object SyncRoot = new();
         private static readonly Type[] MongoEntityTypes = LoadMongoEntityTypes();
         private static bool _initialized;
@@ -34,7 +34,7 @@ namespace Identity.Infrastructure.Persistence.MongoDb
                         cm.AutoMap();
                         // 统一将领域基类的 Id 映射为 MongoDB 主键字段 _id。
                         cm.MapIdMember(c => c.Id)
-                            .SetSerializer(new GuidSerializer(BsonType.Binary)); //在 application 没有安装 objectid 包的情况下，使用 string 存储 GuidV7 类型的 Id。
+                            .SetSerializer(new GuidSerializer(GuidRepresentation.Standard)); //在 application 没有安装 objectid 包的情况下，使用 string 存储 GuidV7 类型的 Id。
                         cm.SetIsRootClass(true);
                         cm.SetIgnoreExtraElements(true);
                     });

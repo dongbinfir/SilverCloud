@@ -12,10 +12,19 @@ public class MappingProfile : Profile
     /// <summary>
     /// 构造函数：启动时自动扫描程序集并注册映射
     /// </summary>
-    public MappingProfile()
+    //public MappingProfile()
+    //{
+    //    // 扫描当前程序集中所有实现了映射接口的类型
+    //    ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
+    //}
+
+    /// <summary>
+    /// 构造函数：扫描指定程序集并注册映射
+    /// </summary>
+    /// <param name="assembly">要扫描的程序集</param>
+    public MappingProfile(Assembly assembly)
     {
-        // 扫描当前程序集中所有实现了映射接口的类型
-        ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
+        ApplyMappingsFromAssembly(assembly);
     }
 
     /// <summary>
