@@ -1,6 +1,9 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom'
 import LoginPage from '@pages/login'
 import DashboardPage from '@pages/dashboard'
+import ProfilesPage from '@pages/profiles'
+import AuthorizationsPage from '@pages/authorizations'
+import AdminLayout from '@layouts/AdminLayout'
 import { useAuthStore } from '@store/authStore'
 
 function ProtectedRoute({ children }: { children: React.ReactElement }) {
@@ -10,20 +13,34 @@ function ProtectedRoute({ children }: { children: React.ReactElement }) {
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <Navigate to="/dashboard" replace />,
-  },
-  {
     path: '/login',
     element: <LoginPage />,
   },
   {
-    path: '/dashboard',
+    path: '/',
     element: (
       <ProtectedRoute>
-        <DashboardPage />
+        <AdminLayout />
       </ProtectedRoute>
     ),
+    children: [
+      {
+        path: 'dashboard',
+        element: <DashboardPage />,
+      },
+      {
+        path: 'profiles',
+        element: <ProfilesPage />,
+      },
+      {
+        path: 'authorizations',
+        element: <AuthorizationsPage />,
+      },
+      {
+        path: '*',
+        element: <Navigate to="/dashboard" replace />,
+      },
+    ],
   },
   {
     path: '*',

@@ -2,6 +2,7 @@ using Identity.Application;
 using Identity.Infrastructure;
 using Identity.Infrastructure.Persistence.SqlServer;
 using Identity.WebAPI.ConfigureServices;
+using Microsoft.OpenApi;
 using Scalar.AspNetCore;
 using Shared.Infrastructure.Persistence.MongoDb.Interfaces;
 
@@ -23,7 +24,29 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddControllers();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddSchemaTransformer((schema, context, _) =>
+    {
+        if (context.JsonTypeInfo.Type == typeof(int))
+        {
+            schema.Type = JsonSchemaType.Integer;
+            schema.Format = "int32";
+            schema.OneOf = null;
+            schema.AnyOf = null;
+        }
+
+        if (context.JsonTypeInfo.Type == typeof(long))
+        {
+            schema.Type = JsonSchemaType.Integer;
+            schema.Format = "int64";
+            schema.OneOf = null;
+            schema.AnyOf = null;
+        }
+
+        return Task.CompletedTask;
+    });
+});
 
 var app = builder.Build();
 

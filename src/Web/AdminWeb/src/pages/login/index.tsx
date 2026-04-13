@@ -34,7 +34,13 @@ const LoginPage = () => {
 
   return (
     <ProConfigProvider hashed={false}>
-      <div style={{ backgroundColor: token.colorBgContainer }}>
+      <div
+        style={{
+          backgroundColor: token.colorBgContainer,
+          minHeight: '100vh',
+          width: '100%',
+        }}
+      >
         <LoginForm
           logo="https://github.githubassets.com/favicons/favicon.png"
           title="Silver Cloud"

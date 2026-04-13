@@ -28,6 +28,8 @@
     "paths": {
       "@identity-api": ["./src/api/identity_api.ts"],
       "@components/*": ["./src/components/*"],
+      "@layouts/*": ["./src/layouts/*"],
+      "@router/*": ["./src/router/*"],
       "@store/*": ["./src/store/*"],
       "@pages/*": ["./src/pages/*"]
     }

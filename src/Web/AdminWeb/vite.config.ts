@@ -11,6 +11,8 @@ export default defineConfig({
     alias: {
       "@identity-api": path.resolve(__dirname, "src/api/identity_api.ts"),
       "@components": path.resolve(__dirname, "src/components"),
+      "@layouts": path.resolve(__dirname, "src/layouts"),
+      "@router": path.resolve(__dirname, "src/router"),
       "@store": path.resolve(__dirname, "src/store"),
       "@pages": path.resolve(__dirname, "src/pages"),
     },
