@@ -26,7 +26,7 @@
 
     /* Path aliases */
     "paths": {
-      "@user-api": ["./src/api/user_api.ts"],
+      "@identity-api": ["./src/api/identity_api.ts"],
       "@components/*": ["./src/components/*"],
       "@store/*": ["./src/store/*"],
       "@pages/*": ["./src/pages/*"]

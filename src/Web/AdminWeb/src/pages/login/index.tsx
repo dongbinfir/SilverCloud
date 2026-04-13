@@ -13,7 +13,7 @@ import { theme } from "antd";
 //import type { CSSProperties } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Login as loginApi } from "@components/Auths/AuthsAPI";
+import { Login as loginApi } from "@components/Authorizations/AuthorizationsAPI";
 import { useAuthStore } from "@store/authStore";
 
 type LoginType = "account";
@@ -43,21 +43,14 @@ const LoginPage = () => {
             const result = await loginApi({
               identity: values.username,
               password: values.password,
-            }) as unknown as {
-              accessToken: string;
-              refreshToken: string;
-              userId: string;
-              userName: string;
-              phoneNum?: string;
-              email?: string;
-            };
+            });
             login({
-              token: result.accessToken,
-              refreshToken: result.refreshToken,
-              userId: result.userId,
-              userName: result.userName,
-              phoneNum: result.phoneNum,
-              email: result.email,
+              token: result.accessToken!,
+              refreshToken: result.refreshToken!,
+              accountId: result.user!.id! as number,
+              accountName: result.user!.name!,
+              phoneNum: result.user?.phoneNum,
+              email: result.user?.email,
             });
             navigate('/dashboard', { replace: true });
           }}

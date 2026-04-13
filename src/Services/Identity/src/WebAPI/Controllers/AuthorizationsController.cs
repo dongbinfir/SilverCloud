@@ -1,6 +1,7 @@
 using Identity.Application.Authorizations.Commands.Login;
 using Identity.Application.Authorizations.Commands.Logout;
 using Identity.Application.Authorizations.Commands.RefreshToken;
+using Identity.Application.Authorizations.Dtos;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Security.Claims;
 
@@ -61,7 +62,7 @@ namespace Identity.WebAPI.Controllers
         [AllowAnonymous]
         [EnableRateLimiting("IdentityAuth")]
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(LoginCommand command)
+        public async Task<ActionResult<LoginResponseDto>> Login(LoginCommand command)
         {
             try
             {

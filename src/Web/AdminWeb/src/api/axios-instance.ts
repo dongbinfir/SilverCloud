@@ -20,7 +20,11 @@ export const createAxiosInstance = (baseURL: string) => {
   };
 };
 
+const innerInstance = createAxiosInstance('');
+
 // 默认实例（API 网关）
-export const axiosInstance = createAxiosInstance('');
+export const axiosInstance = <T>(config: AxiosRequestConfig): Promise<T> => {
+  return innerInstance(config);
+};
 
 export default axiosInstance;

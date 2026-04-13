@@ -1,12 +1,12 @@
 import { defineConfig } from 'orval';
 
 export default defineConfig({
-  user: {
+  identity: {
     input: {
       target: 'https://localhost:7060/openapi/v1.json',
     },
     output: {
-      target: './src/api/user_api.ts',
+      target: './src/api/identity_api.ts',
       client: 'axios',
       override: {
         mutator: {

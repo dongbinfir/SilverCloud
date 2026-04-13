@@ -1,17 +1,17 @@
 import { message } from 'antd';
 import {
-  getWebAPIV1,
-  type GetUserProfileQuery,
-  type CreateUserProfileCommand,
-  type UpdateUserProfileCommand,
-  type SearchUserProfilesQuery,
-} from '@user-api';
+  getIdentityWebAPIV1,
+  type GetAccountInfoQuery,
+  type CreateAccountInfoCommand,
+  type UpdateAccountInfoCommand,
+  type SearchAccountInfosQuery  ,
+} from '@identity-api';
 
-const api = getWebAPIV1();
+const api = getIdentityWebAPIV1();
 
-export async function Get(params: GetUserProfileQuery) {
+export async function Get(params: GetAccountInfoQuery) {
   try {
-    const result = await api.postUserUserProfilesGet(params);
+    const result = await api.postIdentityAccountInfosGet(params);
     return result;
   } catch (error) {
     message.error('Failed to get user profile.');
@@ -19,9 +19,9 @@ export async function Get(params: GetUserProfileQuery) {
   }
 }
 
-export async function Create(params: CreateUserProfileCommand) {
+export async function Create(params: CreateAccountInfoCommand) {
   try {
-    const result = await api.postUserUserProfiles(params);
+    const result = await api.postIdentityAccountInfos(params);
     message.success('Created successfully.');
     return result;
   } catch (error) {
@@ -32,7 +32,7 @@ export async function Create(params: CreateUserProfileCommand) {
 
 export async function Delete(id: number | string) {
   try {
-    await api.deleteUserUserProfilesId(id);
+    await api.deleteIdentityAccountInfosId(id);
     message.success('Deleted successfully.');
   } catch (error) {
     message.error('Failed to delete user profile.');
@@ -42,10 +42,10 @@ export async function Delete(id: number | string) {
 
 export async function Update(
   id: number | string,
-  params: UpdateUserProfileCommand,
+  params: UpdateAccountInfoCommand,
 ) {
   try {
-    await api.putUserUserProfilesId(id, params);
+    await api.putIdentityAccountInfosId(id, params);
     message.success('Updated successfully.');
   } catch (error) {
     message.error('Failed to update user profile.');
@@ -53,9 +53,9 @@ export async function Update(
   }
 }
 
-export async function Search(params: SearchUserProfilesQuery) {
+export async function Search(params: SearchAccountInfosQuery) {
   try {
-    const result = await api.postUserUserProfilesSearch(params);
+    const result = await api.postIdentityAccountInfosSearch(params);
     return result;
   } catch (error) {
     message.error('Failed to search user profiles.');

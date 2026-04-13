@@ -5,17 +5,17 @@ interface AuthState {
   isAuthenticated: boolean;
   token: string | null;
   refreshToken: string | null;
-  userId: string | null;
-  userName: string | null;
+  accountId: number | null;
+  accountName: string | null;
   phoneNum: string | null;
   email: string | null;
   login: (params: {
     token: string;
     refreshToken: string;
-    userId: string;
-    userName: string;
-    phoneNum?: string;
-    email?: string;
+    accountId: number;
+    accountName: string;
+    phoneNum?: string | null;
+    email?: string | null;
   }) => void;
   logout: () => void;
 }
@@ -26,18 +26,18 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       token: null,
       refreshToken: null,
-      userId: null,
-      userName: null,
+      accountId: null,
+      accountName: null,
       phoneNum: null,
       email: null,
-      login: ({ token, refreshToken, userId, userName, phoneNum, email }) => {
+      login: ({ token, refreshToken, accountId, accountName, phoneNum, email }) => {
         localStorage.setItem('token', token);
         set({
           isAuthenticated: true,
           token,
           refreshToken,
-          userId,
-          userName,
+          accountId,
+          accountName,
           phoneNum: phoneNum ?? null,
           email: email ?? null,
         });
@@ -48,8 +48,8 @@ export const useAuthStore = create<AuthState>()(
           isAuthenticated: false,
           token: null,
           refreshToken: null,
-          userId: null,
-          userName: null,
+          accountId: null,
+          accountName: null,
           phoneNum: null,
           email: null,
         });

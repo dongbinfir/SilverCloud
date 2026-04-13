@@ -15,7 +15,6 @@ namespace Identity.WebAPI.Services
         private ClaimsPrincipal? AccountInfo => _accountInfo ??= _httpContextAccessor.HttpContext?.User;
 
 
-
         public bool IsAuthenticated => AccountInfo?.Identity?.IsAuthenticated == true;
 
         public int? Id
