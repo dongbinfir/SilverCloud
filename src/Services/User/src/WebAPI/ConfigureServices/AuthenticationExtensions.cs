@@ -1,20 +1,17 @@
-﻿using Identity.Application.Commons.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Infrastructure.Commons;
 using System.Text;
+using User.Application.Commons.Models;
 
-namespace Identity.WebAPI.ConfigureServices
+namespace User.WebAPI.ConfigureServices
 {
     public static class AuthenticationExtensions
     {
         public static IServiceCollection AddJwtAuth(this IServiceCollection services, IConfiguration config)
         {
-            // 1. 添加 JWT 配置
-            services.Configure<JwtSettings>(
-                config.GetSection(JwtSettings.SectionName));
+            services.Configure<JwtSettings>(config.GetSection(JwtSettings.SectionName));
 
-            // 2. 配置 JWT Bearer 认证
             var jwtSettings = config.GetSection(JwtSettings.SectionName).Get<JwtSettings>();
             var key = Encoding.UTF8.GetBytes(jwtSettings!.Secret);
 

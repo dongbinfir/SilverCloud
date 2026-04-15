@@ -1,7 +1,8 @@
-﻿using Shared.Application.Commons.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Shared.Application.Commons.Interfaces;
 using System.Security.Claims;
 
-namespace Identity.WebAPI.Services
+namespace Shared.Infrastructure.Commons
 {
     public class CurrentAccountService : ICurrentAccountService
     {
@@ -11,11 +12,9 @@ namespace Identity.WebAPI.Services
         {
             _httpContextAccessor = httpContextAccessor;
         }
+
         private ClaimsPrincipal? _accountInfo;
         private ClaimsPrincipal? AccountInfo => _accountInfo ??= _httpContextAccessor.HttpContext?.User;
-
-
-        public bool IsAuthenticated => AccountInfo?.Identity?.IsAuthenticated == true;
 
         public int? Id
         {
@@ -25,10 +24,11 @@ namespace Identity.WebAPI.Services
                 return int.TryParse(value, out var id) ? id : null;
             }
         }
+
         public string? Name => AccountInfo?.FindFirst(ClaimTypes.Name)?.Value;
 
         public string? Email => AccountInfo?.FindFirst(ClaimTypes.Email)?.Value;
 
-        public string? PhoneNum => AccountInfo  ?.FindFirst(ClaimTypes.MobilePhone)?.Value;
+        public string? PhoneNum => AccountInfo?.FindFirst(ClaimTypes.MobilePhone)?.Value;
     }
 }

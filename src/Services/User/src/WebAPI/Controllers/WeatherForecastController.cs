@@ -1,11 +1,21 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Application.Commons.Interfaces;
 
 namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]  // 需要认证
     public class WeatherForecastController : ControllerBase
     {
+        private readonly ICurrentAccountService _currentAccountService;
+
+        public WeatherForecastController(ICurrentAccountService currentAccountService)
+        {
+            _currentAccountService = currentAccountService;
+        }
+
         private static readonly string[] Summaries =
         [
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -21,6 +31,19 @@ namespace WebAPI.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpGet("me")]
+        [Microsoft.AspNetCore.Authorization.Authorize]
+        public IActionResult Me()
+        {
+            return Ok(new
+            {
+                _currentAccountService.Id,
+                _currentAccountService.Name,
+                _currentAccountService.Email,
+                _currentAccountService.PhoneNum
+            });
         }
     }
 }
