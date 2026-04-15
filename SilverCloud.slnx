@@ -19,6 +19,10 @@
     <Project Path="src/Services/Test/src/Infrastructure/Infrastructure.csproj" />
     <Project Path="src/Services/Test/src/WebAPI/WebAPI.csproj" />
   </Folder>
+  <Folder Name="/Gateway/" />
+  <Folder Name="/Gateway/src/">
+    <Project Path="src/Services/Gateway/src/WebAPI/WebAPI.csproj" Id="2d8b7d3d-f088-4adf-9448-34fe68f8fdfa" />
+  </Folder>
   <Folder Name="/User/" />
   <Folder Name="/User/src/">
     <Project Path="src/Services/User/src/Application/Application.csproj" Id="47172372-37f0-47d3-9287-068e5b9e7ef6" />

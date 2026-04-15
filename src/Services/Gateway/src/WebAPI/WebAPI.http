@@ -1,0 +1,16 @@
+@Gateway_Host = http://localhost:7080
+
+### Gateway health
+GET {{Gateway_Host}}/health
+
+### Identity route sample
+POST {{Gateway_Host}}/identity/Authorizations/Login
+Content-Type: application/json
+
+{
+  "identity": "admin",
+  "password": "ant.design"
+}
+
+### User route sample
+GET {{Gateway_Host}}/user/WeatherForecast
