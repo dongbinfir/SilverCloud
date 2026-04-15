@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Application.Commons.Interfaces;
 
-namespace WebAPI.Controllers
+namespace User.WebAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("user/[controller]")]
     [Authorize]  // 需要认证
     public class WeatherForecastController : ControllerBase
     {
